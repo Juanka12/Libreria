@@ -6,9 +6,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
+import javax.swing.border.Border;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -39,8 +42,7 @@ public class ParaInicial {
 					Libro libro = new Libro(getInicialPanel().textFieldISBN.getText(),
 							getInicialPanel().textFieldTitulo.getText(), getInicialPanel().textFieldAutor.getText(),
 							getInicialPanel().textFieldEditorial.getText(), getInicialPanel().textFieldPrecio.getText(),
-							ButtonsTools.getSelectedButtonText(getInicialPanel().grupoFormato),
-							ButtonsTools.getSelectedButtonText(getInicialPanel().grupoEstado),
+							getInicialPanel().comboBoxFormatos.getSelectedItem().toString(),getInicialPanel().comboBoxEstados.getSelectedItem().toString(),
 							String.valueOf(getInicialPanel().spinner.getValue()),getInicialPanel().comboBoxGeneros.getSelectedItem().toString());
 					dataController.addBook(libro);
 					UpdateTabla();
@@ -70,12 +72,6 @@ public class ParaInicial {
 		};
 
 		getInicialPanel().btnGuardar.addActionListener(guardar);
-		
-		getInicialPanel().btnSalir.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				System.exit(0);
-			}
-		});
 		
 		getInicialPanel().btnBorrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -145,19 +141,23 @@ public class ParaInicial {
 				}
 			}
 		});
-
-		getInicialPanel().textFieldISBN.addKeyListener(new KeyAdapter() {
-
+				
+		KeyAdapter validarPulsar = new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
-				if (Validaciones.validateISBN(getInicialPanel().textFieldISBN.getText())) {
-					getInicialPanel().textFieldISBN.setBackground(Color.GREEN);
+				JTextField jt = (JTextField) e.getComponent();
+				if (Validaciones.validar(jt.getText(),jt.getName())) {
+					jt.setBorder(BorderFactory.createLineBorder(Color.GREEN));
 				} else {
-					getInicialPanel().textFieldISBN.setBackground(Color.RED);
+					jt.setBorder(BorderFactory.createLineBorder(Color.RED));;
 				}
 			}
-		});
-
+		};
+		
+		for (int i = 0; i < getInicialPanel().textTieldList.length; i++) {
+			getInicialPanel().textTieldList[i].addKeyListener(validarPulsar);
+		}
+		
 		getInicialPanel().tabbedPane.addChangeListener(new ChangeListener() {
 
 			@Override

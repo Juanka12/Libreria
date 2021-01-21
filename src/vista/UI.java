@@ -7,14 +7,10 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JCheckBoxMenuItem;
-import javax.swing.SwingConstants;
 
 public class UI extends JFrame {
 
 	private JMenuBar menuBar;
-	private JMenu mnArchivo;
-	protected JMenuItem mntmCargar;
-	protected JMenuItem mntmGuardar;
 	private JMenu mnOpciones;
 	protected JCheckBoxMenuItem chckbxmntmOscuro;
 	private JMenu mnAyuda;
@@ -22,7 +18,6 @@ public class UI extends JFrame {
 	private JMenu mnInicio;
 	protected JMenuItem mntmPrincipal;
 	protected JMenuItem mntmReset;
-	protected JMenuItem mntmBorrar;
 	protected JMenuItem mntmRepositorio;
 
 	/**
@@ -30,9 +25,9 @@ public class UI extends JFrame {
 	 */
 	public UI() {
 		setTitle("Libreria Juan Carlos");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setResizable(false);
-		setBounds(200, 200, 800, 520);
+		setBounds(200, 200, 800, 578);
 
 		menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -42,18 +37,6 @@ public class UI extends JFrame {
 
 		mntmPrincipal = new JMenuItem("Menu Principal");
 		mnInicio.add(mntmPrincipal);
-
-		mnArchivo = new JMenu("Archivo");
-		menuBar.add(mnArchivo);
-
-		mntmCargar = new JMenuItem("Cargar");
-		mnArchivo.add(mntmCargar);
-
-		mntmGuardar = new JMenuItem("Guardar");
-		mnArchivo.add(mntmGuardar);
-		
-		mntmBorrar = new JMenuItem("Borrar");
-		mnArchivo.add(mntmBorrar);
 
 		mnOpciones = new JMenu("Opciones");
 		menuBar.add(mnOpciones);
@@ -72,6 +55,7 @@ public class UI extends JFrame {
 		
 		mntmRepositorio = new JMenuItem("Repositorio");
 		mnAyuda.add(mntmRepositorio);
+		
 	}
 
 	protected void cambioPanel(JPanel cp) {

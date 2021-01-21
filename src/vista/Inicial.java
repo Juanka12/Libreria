@@ -6,10 +6,8 @@ import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.util.Enumeration;
 import java.util.HashMap;
 
-import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
@@ -31,12 +29,13 @@ import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
+import modelo.Estados;
+import modelo.Formatos;
 import modelo.Generos;
 import modelo.Libro;
 import utiles.ButtonsTools;
 import utiles.Validaciones;
-import javax.swing.JList;
-import javax.swing.AbstractListModel;
+import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 
@@ -48,15 +47,8 @@ public class Inicial extends VistaHeredable {
 	public JButton btnConsultar;
 	public JButton btnBorrar;
 	public JButton btnAdd;
-	public JButton btnSalir;
 	public JTabbedPane tabbedPane;
 	public JPanel PanelLibro;
-	public JRadioButton rdbtnReedicion;
-	public JRadioButton rdbtnNovedad;
-	public JRadioButton rdbtnCartone;
-	public JRadioButton rdbtnRustica;
-	public JRadioButton rdbtnGrapada;
-	public JRadioButton rdbtnEspiral;
 	public JTextField textFieldISBN;
 	public JTextField textFieldTitulo;
 	public JTextField textFieldAutor;
@@ -65,9 +57,10 @@ public class Inicial extends VistaHeredable {
 	public JSpinner spinner;
 	public JPanel PanelEstanteria;
 	public JTable tablaLibros;
-	public ButtonGroup grupoFormato;
-	public ButtonGroup grupoEstado;
 	public JComboBox comboBoxGeneros;
+	public JComboBox comboBoxEstados;
+	public JComboBox comboBoxFormatos;
+	public JTextField textTieldList[] = new JTextField[5];
 
 	/**
 	 * Create the panel.
@@ -108,10 +101,6 @@ public class Inicial extends VistaHeredable {
 		btnAdd.setIcon(new ImageIcon(Inicial.class.getResource("/img/add.png")));
 		panel_1.add(btnAdd);
 		btnAdd.setEnabled(false);
-
-		btnSalir = new JButton("");
-		btnSalir.setIcon(new ImageIcon(Inicial.class.getResource("/img/cerrar.png")));
-		panel_1.add(btnSalir);
 
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		add(tabbedPane, BorderLayout.CENTER);
@@ -169,15 +158,6 @@ public class Inicial extends VistaHeredable {
 
 		JPanel textfields = new JPanel();
 		textfields.setBackground(TEMA1[2]);
-
-		JPanel panelFormato = new JPanel();
-		panelFormato.setBorder(new LineBorder(Color.GRAY, 1, true));
-		panelFormato.setBackground(TEMA1[2]);
-
-		JPanel panelEstado = new JPanel();
-		panelEstado.setBackground(TEMA1[2]);
-		panelEstado.setBorder(new LineBorder(Color.GRAY, 1, true));
-		FlowLayout flowLayout_1 = (FlowLayout) panelEstado.getLayout();
 		GroupLayout gl_PanelLibro = new GroupLayout(PanelLibro);
 		gl_PanelLibro.setHorizontalGroup(
 			gl_PanelLibro.createParallelGroup(Alignment.LEADING)
@@ -185,58 +165,27 @@ public class Inicial extends VistaHeredable {
 					.addContainerGap()
 					.addComponent(labels, GroupLayout.PREFERRED_SIZE, 108, GroupLayout.PREFERRED_SIZE)
 					.addGap(13)
-					.addGroup(gl_PanelLibro.createParallelGroup(Alignment.LEADING)
-						.addComponent(panelEstado, GroupLayout.DEFAULT_SIZE, 614, Short.MAX_VALUE)
-						.addGroup(gl_PanelLibro.createSequentialGroup()
-							.addComponent(textfields, GroupLayout.PREFERRED_SIZE, 129, GroupLayout.PREFERRED_SIZE)
-							.addGap(122)
-							.addComponent(Icon, GroupLayout.DEFAULT_SIZE, 263, Short.MAX_VALUE)
-							.addGap(100))
-						.addComponent(panelFormato, GroupLayout.DEFAULT_SIZE, 614, Short.MAX_VALUE))
-					.addContainerGap())
+					.addComponent(textfields, GroupLayout.PREFERRED_SIZE, 178, GroupLayout.PREFERRED_SIZE)
+					.addGap(73)
+					.addComponent(Icon, GroupLayout.DEFAULT_SIZE, 206, Short.MAX_VALUE)
+					.addGap(110))
 		);
 		gl_PanelLibro.setVerticalGroup(
 			gl_PanelLibro.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_PanelLibro.createSequentialGroup()
 					.addGroup(gl_PanelLibro.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_PanelLibro.createSequentialGroup()
-							.addGap(14)
-							.addGroup(gl_PanelLibro.createParallelGroup(Alignment.TRAILING)
-								.addComponent(textfields, GroupLayout.DEFAULT_SIZE, 201, Short.MAX_VALUE)
-								.addComponent(Icon, GroupLayout.PREFERRED_SIZE, 201, Short.MAX_VALUE))
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(panelFormato, GroupLayout.PREFERRED_SIZE, 31, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(panelEstado, GroupLayout.PREFERRED_SIZE, 31, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_PanelLibro.createSequentialGroup()
 							.addContainerGap()
-							.addComponent(labels, GroupLayout.DEFAULT_SIZE, 278, Short.MAX_VALUE)))
+							.addComponent(labels, GroupLayout.DEFAULT_SIZE, 350, Short.MAX_VALUE))
+						.addGroup(gl_PanelLibro.createSequentialGroup()
+							.addGap(14)
+							.addGroup(gl_PanelLibro.createParallelGroup(Alignment.LEADING)
+								.addComponent(textfields, GroupLayout.DEFAULT_SIZE, 377, Short.MAX_VALUE)
+								.addGroup(gl_PanelLibro.createSequentialGroup()
+									.addComponent(Icon, GroupLayout.PREFERRED_SIZE, 273, Short.MAX_VALUE)
+									.addGap(74)))))
 					.addContainerGap())
 		);
-
-		rdbtnReedicion = new JRadioButton("Reedici\u00F3n");
-		rdbtnReedicion.setOpaque(false);
-		panelEstado.add(rdbtnReedicion);
-
-		rdbtnNovedad = new JRadioButton("Novedad");
-		rdbtnNovedad.setOpaque(false);
-		panelEstado.add(rdbtnNovedad);
-
-		rdbtnCartone = new JRadioButton("Carton\u00E9");
-		rdbtnCartone.setOpaque(false);
-		panelFormato.add(rdbtnCartone);
-
-		rdbtnRustica = new JRadioButton("R\u00FAstica");
-		rdbtnRustica.setOpaque(false);
-		panelFormato.add(rdbtnRustica);
-
-		rdbtnGrapada = new JRadioButton("Grapada");
-		rdbtnGrapada.setOpaque(false);
-		panelFormato.add(rdbtnGrapada);
-
-		rdbtnEspiral = new JRadioButton("Espiral");
-		rdbtnEspiral.setOpaque(false);
-		panelFormato.add(rdbtnEspiral);
 		
 		JLabel lblCantidad = new JLabel("Cantidad");
 		lblCantidad.setHorizontalAlignment(SwingConstants.CENTER);
@@ -256,22 +205,27 @@ public class Inicial extends VistaHeredable {
 		textfields.setLayout(new GridLayout(0, 1, 0, 10));
 
 		textFieldISBN = new JTextField();
+		textFieldISBN.setName("ISBN");
 		textfields.add(textFieldISBN);
 		textFieldISBN.setColumns(10);
 
 		textFieldTitulo = new JTextField();
+		textFieldTitulo.setName("Titulo");
 		textfields.add(textFieldTitulo);
 		textFieldTitulo.setColumns(10);
 
 		textFieldAutor = new JTextField();
+		textFieldAutor.setName("Autor");
 		textfields.add(textFieldAutor);
 		textFieldAutor.setColumns(10);
 
 		textFieldEditorial = new JTextField();
+		textFieldEditorial.setName("Editorial");
 		textfields.add(textFieldEditorial);
 		textFieldEditorial.setColumns(10);
 
 		textFieldPrecio = new JTextField();
+		textFieldPrecio.setName("Precio");
 		textfields.add(textFieldPrecio);
 		textFieldPrecio.setColumns(10);
 		
@@ -282,6 +236,14 @@ public class Inicial extends VistaHeredable {
 		comboBoxGeneros = new JComboBox();
 		comboBoxGeneros.setModel(new DefaultComboBoxModel(Generos.values()));
 		textfields.add(comboBoxGeneros);
+		
+		comboBoxFormatos = new JComboBox();
+		comboBoxFormatos.setModel(new DefaultComboBoxModel(Formatos.values()));
+		textfields.add(comboBoxFormatos);
+		
+		comboBoxEstados = new JComboBox();
+		comboBoxEstados.setModel(new DefaultComboBoxModel(Estados.values()));
+		textfields.add(comboBoxEstados);
 		PanelLibro.setLayout(gl_PanelLibro);
 
 		PanelEstanteria = new JPanel();
@@ -298,28 +260,28 @@ public class Inicial extends VistaHeredable {
 		scrollPane.setViewportView(tablaLibros);
 		PanelEstanteria.setLayout(gl_estanteria);
 
-		grupoFormato = new ButtonGroup();
-		grupoFormato.add(rdbtnCartone);
-		grupoFormato.add(rdbtnEspiral);
-		grupoFormato.add(rdbtnGrapada);
-		grupoFormato.add(rdbtnRustica);
-
-		grupoEstado = new ButtonGroup();
-		grupoEstado.add(rdbtnNovedad);
-		grupoEstado.add(rdbtnReedicion);
-
+		textTieldList[0] = textFieldISBN;
+		textTieldList[1] = textFieldTitulo;
+		textTieldList[2] = textFieldAutor;
+		textTieldList[3] = textFieldEditorial;
+		textTieldList[4] = textFieldPrecio;
 	}
 	@Override
 	public void vaciarCampos() {
 		textFieldISBN.setText("");
-		textFieldISBN.setBackground(Color.WHITE);
+		textFieldISBN.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 		textFieldTitulo.setText("");
+		textFieldTitulo.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 		textFieldAutor.setText("");
+		textFieldAutor.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 		textFieldEditorial.setText("");
+		textFieldEditorial.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 		textFieldPrecio.setText("");
+		textFieldPrecio.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 		spinner.setValue(0);
-		grupoFormato.clearSelection();
-		grupoEstado.clearSelection();
+		comboBoxGeneros.setSelectedItem(null);
+		comboBoxEstados.setSelectedItem(null);
+		comboBoxFormatos.setSelectedItem(null);
 	}
 	
 	@Override
@@ -342,23 +304,13 @@ public class Inicial extends VistaHeredable {
 			compo.setBackground(TEMA1[2]);
 		}
 	}
-	@Override
-	public void tema1() {
-		super.tema1();
-		panel_1.setBackground(TEMA1[1]);
-		panel.setBackground(TEMA1[0]);
-		PanelLibro.setBackground(TEMA1[2]);
-		for (Component compo : PanelLibro.getComponents()) {
-			compo.setBackground(TEMA1[2]);
-		}
-	}
+	
 	@Override
 	public boolean comprobarCampos() {
 		if (!Validaciones.validateISBN(textFieldISBN.getText())
 				|| !Validaciones.isNumberFloat(textFieldPrecio.getText())
 				|| !Validaciones.validateLetters(textFieldAutor.getText()) || textFieldEditorial.getText().equals("")
-				|| textFieldTitulo.getText().equals("") || ButtonsTools.getSelectedButtonText(grupoEstado) == null
-				|| ButtonsTools.getSelectedButtonText(grupoFormato) == null) {
+				|| textFieldTitulo.getText().equals("")) {
 			return true;
 		}
 		return false;

@@ -4,6 +4,17 @@ import java.util.regex.Pattern;
 
 public class Validaciones {
 
+		public static boolean validar(String campo, String name) {
+			if (name.equals("ISBN")) {
+				return validateISBN(campo);
+			}else if (name.equals("Precio")) {
+				return isNumberFloat(campo);
+			}else if (name.equals("Autor")){
+				return validateLetters(campo);
+			}else {
+				return !campo.equals("");
+			}
+		}
 		public static boolean validateLetters(String string) {
 			return Pattern.matches("[a-zA-Z\\s]+", string);
 		}

@@ -17,10 +17,6 @@ public class Libreria {
 		lista.put(libro.getISBN(), libro);
 	}
 	
-	public int getSize() {
-		return lista.size();
-	}
-	
 	public Libro getLibroISBN(String ISBN) {
 		return lista.get(ISBN);
 	}

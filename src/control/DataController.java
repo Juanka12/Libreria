@@ -1,56 +1,102 @@
 package control;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 
+import modelo.Configurations;
 import modelo.Libreria;
 import modelo.Libro;
 
 public class DataController {
 	private Libreria libreria = new Libreria();
 	private IOHandler ioHandler = new IOHandler();
-	private String rutaFile;
+	private Configurations config = new Configurations();
+	private CallerHandler acceso;
 
-	public void deleteFile() {
-		ioHandler.deleter(rutaFile);
+	public DataController() {
+		try {
+			acceso = new CallerHandler();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		loadConfigurations();
 	}
-	public void loadFile() {
-		HashMap<String, Libro> nueva = ioHandler.reader(rutaFile);
+
+	public void loadBBDD() throws SQLException {
+		HashMap<String, Libro> nueva = acceso.getLista();
 		updateLibrary(nueva);
 	}
-	public void saveFile() {
-		ioHandler.writer(getLista(),rutaFile);
+
+	public void saveConfigurations() {
+		ioHandler.writer(this.config, this.config.getRUTA_CONFIG());
 	}
+
+	public void loadConfigurations() {
+		try {
+			config = (Configurations) ioHandler.reader(this.config.getRUTA_CONFIG());
+			loadBBDD();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+	}
+
 	public void reset() {
-		this.libreria.reset();
+		try {
+			this.acceso.vaciarTabla();
+			this.libreria.reset();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
+
 	public void updateLibrary(HashMap<String, Libro> nueva) {
 		this.libreria.update(nueva);
 	}
-	public Libreria getLibreria() {
-		return this.libreria;
-	}
+
 	public void borrarLibroCantidad(String isbn, int cantidad) {
+		try {
+			this.acceso.updateCantidad(isbn, cantidad);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		this.libreria.borrarLibroCantidad(isbn, cantidad);
 	}
+
 	public void borrarLibro(String isbn) {
+		try {
+			this.acceso.removeLibro(isbn);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		this.libreria.borrarLibro(isbn);
 	}
- 	public Libro getLibroISBN(String ISBN) {
-		return this.libreria.getLibroISBN(ISBN);
-	}
+
 	public void addBook(Libro libro) {
+		try {
+			this.acceso.addLibro(libro);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		this.libreria.addBook(libro);
 	}
-	public int getSize() {
-		return this.libreria.getSize();
+	
+	public Libro getLibroISBN(String ISBN) {
+		return this.libreria.getLibroISBN(ISBN);
 	}
+
 	public HashMap<String, Libro> getLista() {
 		return this.libreria.getLista();
 	}
-	public void setRuta(String r) {
-		this.rutaFile = r;
+
+	public Configurations getConfig() {
+		return this.config;
 	}
-	public String getRuta() {
-		return this.rutaFile;
+
+	public void setOscuroConfig(boolean b) {
+		this.config.setOscuro(b);
+	}
+
+	public boolean getOscuroConfig() {
+		return this.config.isOscuro();
 	}
 }

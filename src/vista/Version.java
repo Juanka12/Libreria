@@ -1,13 +1,11 @@
 package vista;
 
-import java.awt.Color;
-
 import java.awt.GridLayout;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
 public class Version extends VistaHeredable{
-	private final String VERSION = "3.4.11";
+	private final String VERSION = "4.11.16";
 	private final String DESCRIPTION = "Libreria creada por Juan Carlos";
 
 	/**
@@ -35,10 +33,6 @@ public class Version extends VistaHeredable{
 	public void claro() {
 		super.claro();
 		setBackground(TEMA1[2]);
-	}
-	@Override
-	public void tema1() {
-		super.tema1();
 	}
 
 }

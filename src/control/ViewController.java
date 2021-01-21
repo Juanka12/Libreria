@@ -1,17 +1,17 @@
 package control;
 
+import modelo.Estados;
+import modelo.Formatos;
+import modelo.Generos;
 import modelo.Libro;
 import utiles.ButtonsTools;
 import vista.Inicial;
-import vista.InputFrame;
-import vista.RutaPanel;
 import vista.Version;
 import vista.VistaHeredable;
 
 public class ViewController {
 	private Version versionPanel = new Version();
 	private Inicial inicialPanel = new Inicial();
-	private RutaPanel rutaPanel = new RutaPanel();
 	
 	public Version getVersionPanel() {
 		return this.versionPanel;
@@ -19,15 +19,6 @@ public class ViewController {
 
 	public Inicial getInicialPanel() {
 		return this.inicialPanel;
-	}
-	
-	public RutaPanel getRutaPanel() {
-		return this.rutaPanel;
-	}
-	
-	public void newInputFrame(RutaPanel rp) {
-		InputFrame ip = new InputFrame();
-		ip.main(rp);
 	}
 	
 	public void ModoOscuro(VistaHeredable jp, boolean check) {
@@ -49,8 +40,9 @@ public class ViewController {
 		getInicialPanel().textFieldEditorial.setText(libro.getEditorial());
 		getInicialPanel().textFieldPrecio.setText(libro.getPrecio());
 		getInicialPanel().spinner.setValue(Integer.valueOf(libro.getCantidad()));
-		getInicialPanel().grupoFormato.setSelected(ButtonsTools.getButtonModel(getInicialPanel().grupoFormato, libro.getFormato()),true);
-		getInicialPanel().grupoEstado.setSelected(ButtonsTools.getButtonModel(getInicialPanel().grupoEstado, libro.getEstado()),true);
+		getInicialPanel().comboBoxGeneros.setSelectedIndex(Generos.valueOf(libro.getGenero()).ordinal());
+		getInicialPanel().comboBoxFormatos.setSelectedIndex(Formatos.valueOf(libro.getFormato()).ordinal());
+		getInicialPanel().comboBoxEstados.setSelectedIndex(Estados.valueOf(libro.getEstado()).ordinal());
 		getInicialPanel().tabbedPane.setSelectedIndex(0);
 	}
 	

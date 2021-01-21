@@ -5,15 +5,13 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.util.HashMap;
-import java.util.Map;
 
 import modelo.Libro;
 
-public class IOHandler implements Serializable{
+public class IOHandler {
 
-	public void writer(HashMap<String, Libro> map, String ruta) {
+	public void writer(Object map, String ruta) {
 		try {
 			File toWrite = new File(ruta);
 			FileOutputStream fos = new FileOutputStream(toWrite);
@@ -28,13 +26,13 @@ public class IOHandler implements Serializable{
 		}
 	}
 
-	public HashMap<String, Libro> reader(String ruta) {
+	public Object reader(String ruta) {
 		try {
 			File toRead = new File(ruta);
 			FileInputStream fis = new FileInputStream(toRead);
 			ObjectInputStream ois = new ObjectInputStream(fis);
 
-			HashMap<String, Libro> mapInFile = (HashMap<String, Libro>) ois.readObject();
+			Object mapInFile = ois.readObject();
 
 			ois.close();
 			fis.close();
@@ -42,7 +40,7 @@ public class IOHandler implements Serializable{
 		} catch (Exception e) {
 			System.out.println(e);
 		}
-		return null;
+		return new Object();
 	}
 	
 	public void deleter(String ruta) {
